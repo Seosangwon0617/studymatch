@@ -1,0 +1,22 @@
+=== Backend (FastAPI) ===
+1) Add to backend/requirements.txt:
+   redis>=5.0.0
+2) Ensure app/main.py includes:
+   from app.routers import chat
+   app.include_router(chat.router)
+3) Docker Compose must have a Redis service named "redis". (You already do.)
+4) Rebuild & up:
+   docker compose build --no-cache api
+   docker compose up -d
+   docker compose logs -f api
+5) Create rooms from a group (owner or member):
+   POST /chat/rooms/from-group/{group_id}
+
+=== Frontend (React) ===
+- Copy frontend/Chat.jsx to your src/components (or src/) and import it in App.jsx.
+- Render <Chat token={token}/> behind auth.
+
+=== Quick test ===
+- Owner creates a group, applicant joins & gets approved (membership).
+- Owner (or member) calls POST /chat/rooms/from-group/{group_id} once.
+- Open the web, navigate to Chat tab, select the room, send messages from two different browsers/sessions.
